@@ -53,6 +53,8 @@ class UnityAds {
 	private static var __setConsent:Bool->Void = function(isGranted:Bool){};
 	private static var __getConsent:Void->Bool = function(){return false;};
 
+	private static var completeCB;
+
 
 
 	public static function init(appId:String, testMode:Bool, debugMode:Bool) {
@@ -94,7 +96,7 @@ class UnityAds {
 			__showBanner = JNI.createStaticMethod("com/unityads/UnityAdsEx", "showBanner", "(Ljava/lang/String;)V");
 			__hideBanner = JNI.createStaticMethod("com/unityads/UnityAdsEx", "hideBanner", "()V");
 			__moveBanner = JNI.createStaticMethod("com/unityads/UnityAdsEx", "moveBanner", "(Ljava/lang/String;)V");
-			// __destroyBanner = JNI.createStaticMethod("com/unityads/UnityAdsEx", "﻿destroyBanner", "()V");
+			// __destroyBanner = JNI.createStaticMethod("com/unityads/UnityAdsEx", "destroyBanner", "()V");
 			__setConsent = JNI.createStaticMethod("com/unityads/UnityAdsEx", "setUsersConsent", "(Z)V");
 			__getConsent = JNI.createStaticMethod("com/unityads/UnityAdsEx", "getUsersConsent", "()Z");
 
@@ -123,9 +125,14 @@ class UnityAds {
 		}
 	}
 
-	public static function showRewarded(rewardPlacementId:String,alertTitle:String,alertMSG:String) {
+	public static function showRewarded(rewardPlacementId:String,alertTitle:String,alertMSG:String, cb) {
+
+		completeCB = cb;
+
 		try {
 			__showRewarded(rewardPlacementId,alertTitle,alertMSG);
+
+
 		} catch(e:Dynamic) {
 			trace("ShowRewardedVideo Exception: "+e);
 		}
@@ -333,12 +340,16 @@ class UnityAds {
 		}
 		if(event == "rewardedcompleted")
 		{
-			trace("REWARDED COMPLETED");
+			if (completeCB != null) completeCB();
+
+			trace("UityAds REWARDED COMPLETED");
 			_rewardedCompleted = true;
 		}
 		if(event == "videoisskipped")
 		{
-			trace("VIDEO IS SKIPPED");
+			if (completeCB != null) completeCB();
+
+			trace("UityAds VIDEO IS SKIPPED");
 			_videoIsSkipped = true;
 		}
 		if(event == "bannerdidclick")
@@ -390,10 +401,14 @@ class UnityAds {
 	}
 	public function onRewardedCompleted()
 	{
+		if (completeCB != null) completeCB();
+		trace("UnityAds onRewardedCompleted");
 		_rewardedCompleted = true;
 	}
 	public function onVideoSkipped()
 	{
+		if (completeCB != null) completeCB();
+		trace("UnityAds onVideoSkipped");
 		_videoIsSkipped = true;
 	}
 	public function onBannerShow()
