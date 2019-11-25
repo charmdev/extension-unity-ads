@@ -1,13 +1,7 @@
 package;
 
-#if cpp
-import cpp.Lib;
-#elseif neko
-import neko.Lib;
-#else
-import nme.JNI;
 import nme.Lib;
-#end
+import nme.JNI;
 
 
 class UnityAds {
