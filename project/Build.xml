@@ -6,12 +6,9 @@
 	
 	<set name="mobile" value="1" if="iphone"/>
 	<set name="mobile" value="1" if="android"/>
-	<set name="mobile" value="1" if="webos"/>
-	<set name="mobile" value="1" if="blackberry"/>
 	
 	<set name="SLIBEXT" value=".lib" if="windows"/>
 	<set name="SLIBEXT" value=".a" unless="windows"/>
-	<set name="SLIBEXT" value=".so" if="webos"/>
     
     <files id="iphone">
         <depend name="${HXCPP}/include/hx/Macros.h"/>
@@ -21,11 +18,6 @@
         <compilerflag value="-F../frameworks" />
         <file name="ios/UnityAdsEx.mm" />
     </files>
-    
-    <files id="android">
-      	<depend name="${HXCPP}/include/hx/Macros.h"/>
-      	<depend name="${HXCPP}/include/hx/CFFI.h"/>
-  	</files>
     
 	<files id="common">
 		<compilerflag value="-Iinclude"/>
@@ -58,7 +50,6 @@
 		<outdir name="../ndll/${BINDIR}" />
 		<ext value=".ndll" unless="mobile"/>
 		<files id="iphone" if="iphone"/>
-		<files id="android" if="android"/>
 		<files id="common"/>
 	</target>
     

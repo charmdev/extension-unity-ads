@@ -5,18 +5,9 @@ import cpp.Lib;
 #elseif neko
 import neko.Lib;
 #else
-import openfl.Lib;
+import nme.JNI;
+import nme.Lib;
 #end
-
-#if android
-#if openfl_legacy
-import openfl.utils.JNI;
-#else
-import lime.system.JNI;
-#end
-#end
-
-import openfl.events.MouseEvent;
 
 
 class UnityAds {
