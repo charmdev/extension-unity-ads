@@ -39,6 +39,7 @@ class UnityAds {
 	private static var __getConsent:Void->Bool = function(){return false;};
 
 	private static var completeCB;
+	private static var skipCB;
 
 
 
@@ -110,9 +111,10 @@ class UnityAds {
 		}
 	}
 
-	public static function showRewarded(rewardPlacementId:String,alertTitle:String,alertMSG:String, cb) {
+	public static function showRewarded(rewardPlacementId:String,alertTitle:String,alertMSG:String, cb, skip) {
 
 		completeCB = cb;
+		skipCB = skip;
 
 		try {
 			__showRewarded(rewardPlacementId,alertTitle,alertMSG);
@@ -325,16 +327,14 @@ class UnityAds {
 		}
 		if(event == "rewardedcompleted")
 		{
-			if (completeCB != null) completeCB();
-
 			trace("UityAds REWARDED COMPLETED");
+			if (completeCB != null) completeCB();
 			_rewardedCompleted = true;
 		}
 		if(event == "videoisskipped")
 		{
-			if (completeCB != null) completeCB();
-
 			trace("UityAds VIDEO IS SKIPPED");
+			if (skipCB != null) skipCB();
 			_videoIsSkipped = true;
 		}
 		if(event == "bannerdidclick")
@@ -386,14 +386,14 @@ class UnityAds {
 	}
 	public function onRewardedCompleted()
 	{
-		if (completeCB != null) completeCB();
 		trace("UnityAds onRewardedCompleted");
+		if (completeCB != null) completeCB();
 		_rewardedCompleted = true;
 	}
 	public function onVideoSkipped()
 	{
-		if (completeCB != null) completeCB();
 		trace("UnityAds onVideoSkipped");
+		if (skipCB != null) skipCB();
 		_videoIsSkipped = true;
 	}
 	public function onBannerShow()
