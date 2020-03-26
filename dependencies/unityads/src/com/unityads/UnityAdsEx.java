@@ -148,7 +148,7 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
                         animation1.setDuration(1000);
                         _self.layout.startAnimation(animation1);
 
-                        unityadsCallback.call("onBannerShow", new Object[] {});
+                        //unityadsCallback.call("onBannerShow", new Object[] {});
 
                      }else{
                         UnityBanners.setBannerListener (_self);
@@ -176,7 +176,7 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
                             public void run() {
                                 _self.bannerView.setVisibility(View.GONE);
 
-                                unityadsCallback.call("onBannerHide", new Object[] {});
+                                //unityadsCallback.call("onBannerHide", new Object[] {});
                             }
                         }, 1000);
 
@@ -272,13 +272,13 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
     public void onUnityAdsReady(final String zoneId) {
         
         Log.d("UnityAdsEx","Fetch Completed ");
-        unityadsCallback.call("onAdIsFetch", new Object[] {});
+        //unityadsCallback.call("onAdIsFetch", new Object[] {});
     }
     
     @Override
     public void onUnityAdsError(UnityAds.UnityAdsError error, String message) {
         Log.d("UnityAdsEx","Fetch Failed ");
-        unityadsCallback.call("onAdFailedToFetch", new Object[] {});
+        //unityadsCallback.call("onAdFailedToFetch", new Object[] {});
     }
     
     @Override
@@ -298,21 +298,32 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
     @Override
     public void onUnityAdsFinish(String zoneId, UnityAds.FinishState result) {
         
-        switch(result){
-            case ERROR:
-                break;
-            case SKIPPED:
-                unityadsCallback.call("onVideoSkipped", new Object[] {});
-                break;
-            case COMPLETED:
-                if (showedVideo) {
-                    unityadsCallback.call("onVideoCompleted", new Object[] {});
-                }else if (showedRewarded){
-                    unityadsCallback.call("onRewardedCompleted", new Object[] {});
-                }
-                break;
-        }
-        
+        if (Extension.mainView == null) return;
+		GLSurfaceView view = (GLSurfaceView) Extension.mainView;
+
+		view.queueEvent(new Runnable()
+		{
+			public void run()
+			{
+				if (unityadsCallback != null)
+				{
+					switch(result) {
+                        case ERROR:
+                            break;
+                        case SKIPPED:
+                            unityadsCallback.call("onVideoSkipped", new Object[] {});
+                            break;
+                        case COMPLETED:
+                            if (showedVideo) {
+                                unityadsCallback.call("onVideoCompleted", new Object[] {});
+                            }else if (showedRewarded){
+                                unityadsCallback.call("onRewardedCompleted", new Object[] {});
+                            }
+                            break;
+                    }
+				}
+			}
+		});
     }
 ///banner listener
     @Override
@@ -343,23 +354,23 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
     @Override
     public void onUnityBannerShow (String placementId) {
 
-        unityadsCallback.call("onBannerShow", new Object[] {});
+        //unityadsCallback.call("onBannerShow", new Object[] {});
     }
 
     @Override
     public void onUnityBannerClick (String placementId) {
-        unityadsCallback.call("onBannerClick", new Object[] {});
+        //unityadsCallback.call("onBannerClick", new Object[] {});
     }
 
     @Override
     public void onUnityBannerHide (String placementId) {
-        unityadsCallback.call("onBannerHide", new Object[] {});
+        //unityadsCallback.call("onBannerHide", new Object[] {});
     }
 
     @Override
     public void onUnityBannerError (String message) {
         UnityAdsEx.bannerLoaded = false;
-        unityadsCallback.call("onBannerError", new Object[] {});
+        //unityadsCallback.call("onBannerError", new Object[] {});
     }
 
     public void onCreate ( Bundle savedInstanceState )
