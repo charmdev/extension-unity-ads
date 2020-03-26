@@ -34,6 +34,8 @@ import com.unity3d.services.core.webview.WebView;
 import com.unity3d.services.banners.IUnityBannerListener;
 import com.unity3d.services.banners.UnityBanners;
 
+import android.opengl.GLSurfaceView;
+
 public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBannerListener {
 
     private static UnityAdsEx _self = null;
