@@ -284,12 +284,15 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
     @Override
     public void onUnityAdsStart(String zoneId) {
     //public void onAdStarted(String zoneId) {
-        
+
+        Log.d("UnityAdsEx onUnityAdsStart", zoneId);
+        /*
         if (showedVideo) {
             unityadsCallback.call("onVideoDidShow", new Object[] {});
         }else if (showedRewarded){
             unityadsCallback.call("onRewardedDidShow", new Object[] {});
         }
+        */
     }
     
     @Override
