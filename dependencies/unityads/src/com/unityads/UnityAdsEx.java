@@ -40,6 +40,7 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
 
     private static UnityAdsEx _self = null;
     protected static HaxeObject unityadsCallback;
+    protected static UnityAds.FinishState resultFinishState;
     
     private View bannerView;
     private LinearLayout layout;
@@ -300,6 +301,8 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
     @Override
     public void onUnityAdsFinish(String zoneId, UnityAds.FinishState result) {
         
+        resultFinishState = result;
+
         if (Extension.mainView == null) return;
 		GLSurfaceView view = (GLSurfaceView) Extension.mainView;
 
@@ -309,7 +312,7 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener, IUnityBa
 			{
 				if (unityadsCallback != null)
 				{
-					switch(result) {
+					switch(resultFinishState) {
                         case ERROR:
                             break;
                         case SKIPPED:
