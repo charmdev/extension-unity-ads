@@ -41,7 +41,7 @@ class UnityAds {
 	private static var completeCB;
 	private static var skipCB;
 
-
+	public static var onRewardedEvent:String->Void = null;
 
 	public static function init(appId:String, testMode:Bool, debugMode:Bool) {
 		
@@ -328,12 +328,14 @@ class UnityAds {
 		if(event == "rewardedcompleted")
 		{
 			trace("UityAds REWARDED COMPLETED");
+			dispatchEventIfPossible("CLOSED");
 			if (completeCB != null) completeCB();
 			_rewardedCompleted = true;
 		}
 		if(event == "videoisskipped")
 		{
 			trace("UityAds VIDEO IS SKIPPED");
+			dispatchEventIfPossible("CLOSED");
 			if (skipCB != null) skipCB();
 			_videoIsSkipped = true;
 		}
@@ -387,12 +389,14 @@ class UnityAds {
 	public function onRewardedCompleted()
 	{
 		trace("UnityAds onRewardedCompleted");
+		dispatchEventIfPossible("CLOSED");
 		if (completeCB != null) completeCB();
 		_rewardedCompleted = true;
 	}
 	public function onVideoSkipped()
 	{
 		trace("UnityAds onVideoSkipped");
+		dispatchEventIfPossible("CLOSED");
 		if (skipCB != null) skipCB();
 		_videoIsSkipped = true;
 	}
@@ -414,5 +418,17 @@ class UnityAds {
 	}
 
 	#end
+
+	private function dispatchEventIfPossible(e:String):Void
+	{
+		if (onRewardedEvent != null)
+		{
+			onRewardedEvent(e);
+		}
+		else
+		{
+			trace('no event handler');
+		}
+	}
 
 }
