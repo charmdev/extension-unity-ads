@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-	implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.ext.unityAds}"
-
 	compile project(':deps:extension-api')
+
+	implementation "com.unity3d.ads:unity-ads:${rootProject.ext.unityAds}"
 }
