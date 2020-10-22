@@ -21,6 +21,8 @@ class UnityAds {
 
 	public static var onRewardedEvent:String->Void = null;
 
+	private static var isEnabled:Bool = true;
+
 	public static function init(appId:String, testMode:Bool, debugMode:Bool) {
 #if ios
 		if(initialized) return;
@@ -31,7 +33,7 @@ class UnityAds {
 			__canShowAds = cpp.Lib.load("unityads","unityads_canshow",1);
 
 			__init(appId, testMode, debugMode);
-			__unityads_set_event_handle(notifyListeners);
+			__unityads_set_event_handle(unity_notifyListeners);
 		}catch(e:Dynamic){
 			trace("iOS INIT Exception: "+e);
 			initialized = false;
@@ -73,23 +75,33 @@ class UnityAds {
 		}
 	}
 
+	public static function setEnabled(val:Bool):Void {
+		isEnabled = val;
+	}
+
 	public static function canShowAds(placementID:String):Bool
 	{
-		return __canShowAds(placementID);
+		var result:Bool = __canShowAds(placementID);
+
+		trace("UnityAds canShowAds", result);
+
+		return result;
 	}
 
 #if ios
-	private static function notifyListeners(inEvent:Dynamic)
+	private static function unity_notifyListeners(inEvent:Dynamic)
 	{
+		if (!isEnabled) return;
+
 		var event:String = Std.string(Reflect.field(inEvent, "type"));
 
-		if (event == "rewardedcompleted")
+		if (event == "unity_rewardedcompleted")
 		{
 			trace("UnityAds REWARDED COMPLETED");
 			dispatchEventIfPossible("CLOSED");
 			if (completeCB != null) completeCB();
 		}
-		else if (event == "videoisskipped")
+		else if (event == "unity_videoisskipped")
 		{
 			trace("UnityAds REWARDED SKIPPED");
 			dispatchEventIfPossible("CLOSED");

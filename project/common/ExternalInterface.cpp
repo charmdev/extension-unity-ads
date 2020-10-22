@@ -52,7 +52,7 @@ extern "C" int unityads_register_prims () { return 0; }
 
 extern "C" void sendUnityAdsEvent(const char* type)
 {
-	printf("Send Event: %s\n", type);
+	printf("UnityAds Send Event: %s\n", type);
 	value o = alloc_empty_object();
 	alloc_field(o,val_id("type"),alloc_string(type));
 	val_call1(unityAdsEventHandle->get(), o);

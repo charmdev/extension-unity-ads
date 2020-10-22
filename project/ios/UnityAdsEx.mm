@@ -54,17 +54,14 @@ extern "C" void sendUnityAdsEvent(char* event);
 
 - (void)unityAdsReady:(NSString *)placementId {
 	NSLog(@"unityAdsReady");
-	sendUnityAdsEvent("adisfetch");
 }
 
 - (void)unityAdsDidError:(UnityAdsError)error withMessage:(NSString *)message {
 	NSLog(@"UnityAds ERROR: %ld - %@",(long)error, message);
-	sendUnityAdsEvent("adfailedtofetch");
 }
 
 - (void)unityAdsDidStart:(NSString *)placementId {
 	NSLog(@"unityAdsDidShow");
-	sendUnityAdsEvent("rewardeddidshow");
 }
 
 - (void)unityAdsDidFinish:(NSString *)placementId withFinishState:(UnityAdsFinishState)state {
@@ -72,13 +69,13 @@ extern "C" void sendUnityAdsEvent(char* event);
 	
 	switch (state) {
 		case kUnityAdsFinishStateError:
-			sendUnityAdsEvent("videoisskipped");
+			sendUnityAdsEvent("unity_videoisskipped");
 			break;
 		case kUnityAdsFinishStateSkipped:
-			sendUnityAdsEvent("videoisskipped");
+			sendUnityAdsEvent("unity_videoisskipped");
 			break;
 		case kUnityAdsFinishStateCompleted:
-			sendUnityAdsEvent("rewardedcompleted");
+			sendUnityAdsEvent("unity_rewardedcompleted");
 			break;
 		default:
 			break;
