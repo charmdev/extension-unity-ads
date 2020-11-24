@@ -11,6 +11,7 @@ class UnityAds {
 #end
 #if android
 	private static var __init:Dynamic;
+	private static var __inst:UnityAds;
 #end
 
 	private static var __showRewarded:String->String->String->Void = function(rewardPlacementId:String,alertTitle:String,alertMSG:String){};
@@ -51,8 +52,9 @@ class UnityAds {
 				__init = JNI.createStaticMethod("com/unityads/UnityAdsEx", "init", "(Lorg/haxe/lime/HaxeObject;Ljava/lang/String;ZZ)V", true);
 			}
 
+			__inst = new UnityAds();
 			var args = new Array<Dynamic>();
-			args.push(new UnityAds());
+			args.push(__inst);
 			args.push(appId);
 			args.push(testMode);
 			args.push(debugMode);
