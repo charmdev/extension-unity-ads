@@ -17,8 +17,10 @@
         <activity
         android:name="com.unity3d.services.ads.adunit.AdUnitActivity"
         android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
-        android:hardwareAccelerated="true"
+        android:hardwareAccelerated="@bool/hasHardwareAcceleration"
+        tools:replace="android:hardwareAccelerated"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        
         <activity
         android:name="com.unity3d.services.ads.adunit.AdUnitTransparentActivity"
         android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
