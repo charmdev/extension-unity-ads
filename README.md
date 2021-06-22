@@ -7,6 +7,4 @@ UnityAds.showRewarded("PlacementID", "title text", "description");
 
 ## Main Features
 
-  * Video Support
-  * Rewarded Video Support
-  * Banner Support
+  * Rewarded Video
