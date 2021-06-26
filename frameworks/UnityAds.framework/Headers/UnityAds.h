@@ -34,7 +34,6 @@
 #import "UnityAdsInitializationError.h"
 #import "UnityAdsInitializationDelegate.h"
 #import "UnityAdsLoadDelegate.h"
-#import "UnityAdsShowDelegate.h"
 #import "UADSLoadOptions.h"
 #import "UADSShowOptions.h"
 
@@ -183,22 +182,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The `UIViewController` that is to present the ad view controller.
  */
-+ (void)show:(UIViewController *)viewController __attribute__((deprecated("Please migrate to using show call with placementId and showDelegate instead")));
++ (void)show:(UIViewController *)viewController;
 /**
  *  Show an ad using the provided placement ID.
  *
  *  @param viewController The `UIViewController` that is to present the ad view controller.
  *  @param placementId    The placement ID, as defined in Unity Ads admin tools.
  */
-+ (void)show:(UIViewController *)viewController placementId:(NSString *)placementId __attribute__((deprecated("Please migrate to using show call with showDelegate instead")));;
-/**
- *  Show an ad using the provided placement ID.
- *
- *  @param viewController The `UIViewController` that is to present the ad view controller.
- *  @param placementId    The placement ID, as defined in Unity Ads admin tools.
- *  @param showDelegate The show delegate.
- */
-+ (void)show:(UIViewController *)viewController placementId:(NSString *)placementId showDelegate:(nullable id<UnityAdsShowDelegate>)showDelegate;
++ (void)show:(UIViewController *)viewController placementId:(NSString *)placementId;
 /**
  *  Show an ad using the provided placement ID.
  *
@@ -206,16 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param placementId    The placement ID, as defined in Unity Ads admin tools.
  *  @param options    Additional options
  */
-+ (void)show:(UIViewController *)viewController placementId:(NSString *)placementId options:(UADSShowOptions *)options __attribute__((deprecated("Please migrate to using show call with showDelegate instead")));;
-/**
- *  Show an ad using the provided placement ID.
- *
- *  @param viewController The `UIViewController` that is to present the ad view controller.
- *  @param placementId    The placement ID, as defined in Unity Ads admin tools.
- *  @param options    Additional options
- *  @param showDelegate The show delegate.
- */
-+ (void)show:(UIViewController *)viewController placementId:(NSString *)placementId options:(UADSShowOptions *)options showDelegate:(nullable id<UnityAdsShowDelegate>)showDelegate;
++ (void)show:(UIViewController *)viewController placementId:(NSString *)placementId options:(UADSShowOptions *)options;
 /**
  *  Provides the currently assigned `UnityAdsDelegate`. Meant to support use of single delegate
  *
@@ -270,7 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return If `YES`, the default placement is ready to show an ad.
  */
-+ (BOOL)isReady __attribute__((deprecated("Please migrate to using load call with UnityAdsLoadDelegate")));
++ (BOOL)isReady;
 /**
  *  Check if a particular placement is ready to show an ad.
  *
@@ -278,7 +260,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return If `YES`, the placement is ready to show an ad.
  */
-+ (BOOL)isReady:(NSString *)placementId __attribute__((deprecated("Please migrate to using load call with UnityAdsLoadDelegate")));
++ (BOOL)isReady:(NSString *)placementId;
 /**
  *  Check the current state of the default placement.
  *
