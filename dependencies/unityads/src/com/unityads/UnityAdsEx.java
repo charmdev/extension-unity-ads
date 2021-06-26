@@ -20,9 +20,7 @@ import android.view.ViewGroup;
 import org.haxe.extension.Extension;
 import org.haxe.lime.HaxeObject;
 
-import com.unity3d.ads.IUnityAdsShowListener;
 import com.unity3d.ads.IUnityAdsListener;
-
 import com.unity3d.ads.UnityAds;
 import com.unity3d.services.core.log.DeviceLog;
 import com.unity3d.ads.metadata.MediationMetaData;
@@ -42,13 +40,13 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener {
 	
 	private LinearLayout layout;
 
-	private static String appId = null;
-	private static MetaData gdprMetaData = null;
+	private static String appId=null;
+	private static MetaData gdprMetaData=null;
 
-	static public void init(HaxeObject cb, final String appId, final boolean testMode, final boolean debugMode){
+	static public void init(HaxeObject cb, final String appId,final boolean testMode,final boolean debugMode){
 		
 		unityadsCallback = cb;
-		UnityAdsEx.appId = appId;
+		UnityAdsEx.appId= appId;
 		
 		if (Extension.mainView == null) return;
 		GLSurfaceView view = (GLSurfaceView) Extension.mainView;
@@ -69,65 +67,19 @@ public class UnityAdsEx extends Extension implements IUnityAdsListener {
 
 		Extension.mainActivity.runOnUiThread(new Runnable() {
 			public void run() {
-					UnityAds.show(mainActivity, rewardPlacementId, mUnityShowListener);
+					UnityAds.show(mainActivity, rewardPlacementId);
 				}
 		});
 		Log.d("UnityAdsEx","Show Rewarded End ");
 	}
 	
-	public static boolean canShowUnityAds(final String placementId) {
+	public static boolean canShowUnityAds(final String placementId){
 		return UnityAds.isReady(placementId);
 	}
 	
-	public static boolean isSupportedUnityAds() {
+	public static boolean isSupportedUnityAds(){
 		return UnityAds.isSupported();
 	}
-
-	static private IUnityAdsShowListener mUnityShowListener = new IUnityAdsShowListener()
-	{
-		@Override
-		public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message)
-		{
-
-		}
-
-		@Override
-		public void onUnityAdsShowComplete(String placementId, UnityAds.UnityAdsShowCompletionState state)
-		{
-			
-		}
-
-		@Override
-		public void onUnityAdsShowStart(String placementId)
-		{
-			Log.d("UnityAdsEx","onUnityAdsShowStart");
-
-			if (Extension.mainView == null) return;
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					if (unityadsCallback != null)
-						unityadsCallback.call("onRewardedDisplaying", new Object[] {});
-				}
-			});
-		}
-
-		@Override	
-		public void onUnityAdsShowClick(String placementId)
-		{
-			Log.d("UnityAdsEx","onUnityAdsShowClick");
-
-			if (Extension.mainView == null) return;
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					if (unityadsCallback != null)
-						unityadsCallback.call("onRewardedClick", new Object[] {});
-				}
-			});
-		}
-		
-	};
 
 	@Override
 	public void onUnityAdsReady(final String zoneId) {

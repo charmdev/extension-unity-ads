@@ -10,7 +10,7 @@ using namespace unityads;
 
 extern "C" void sendUnityAdsEvent(char* event);
 
-@interface UnityAdsController : NSObject <UnityAdsDelegate, UnityAdsShowDelegate>
+@interface UnityAdsController : NSObject <UnityAdsDelegate>
 
 - (id)initWithID:(NSString*)appID testModeOn:(BOOL)testMode debugModeOn:(BOOL)debugMode;
 - (void)showRewardedAdWithPlacementID:(NSString*)videoPlacementId andTitle:(NSString*)title withMsg:(NSString*)msg;
@@ -40,7 +40,7 @@ extern "C" void sendUnityAdsEvent(char* event);
 
 		UIViewController *viewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 
-		[UnityAds show:viewController placementId:rewardPlacementId showDelegate:self];
+		[UnityAds show:viewController placementId:rewardPlacementId];
 	}
 }
 
@@ -62,26 +62,6 @@ extern "C" void sendUnityAdsEvent(char* event);
 
 - (void)unityAdsDidStart:(NSString *)placementId {
 	NSLog(@"unityAdsDidShow");
-}
-
-- (void)unityAdsShowStart:(NSString *)placementId
-{
-	sendUnityAdsEvent("unity_video_displaying");
-}
-
-- (void)unityAdsShowClick:(NSString *)placementId
-{
-	sendUnityAdsEvent("unity_video_click");
-}
-
-- (void)unityAdsShowComplete:(NSString *)placementId withFinishState:(UnityAdsShowCompletionState)state
-{
-
-}
-
-- (void)unityAdsShowFailed:(NSString *)placementId withError:(UnityAdsShowError)error withMessage:(NSString *)message
-{
-
 }
 
 - (void)unityAdsDidFinish:(NSString *)placementId withFinishState:(UnityAdsFinishState)state {
