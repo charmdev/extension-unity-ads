@@ -19,6 +19,8 @@ class UnityAds {
 	
 	private static var completeCB:Void->Void;
 	private static var skipCB:Void->Void;
+	private static var viewCB:Void->Void;
+	private static var clickCB:Void->Void;
 
 	public static var onRewardedEvent:String->Void = null;
 
@@ -65,10 +67,12 @@ class UnityAds {
 #end
 	}
 
-	public static function showRewarded(rewardPlacementId:String,alertTitle:String,alertMSG:String, cb, skip)
+	public static function showRewarded(rewardPlacementId:String,alertTitle:String,alertMSG:String, cb, skip, displaying, click)
 	{
 		completeCB = cb;
 		skipCB = skip;
+		viewCB = displaying;
+		clickCB = click;
 
 		try {
 			__showRewarded(rewardPlacementId,alertTitle,alertMSG);
@@ -109,18 +113,45 @@ class UnityAds {
 			dispatchEventIfPossible("CLOSED");
 			if (skipCB != null) skipCB();
 		}
+		else if (event == "unity_video_displaying")
+		{
+			trace("UnityAds REWARDED DISPLAYING");
+			dispatchEventIfPossible("DISPLAY");
+			if (viewCB != null) viewCB();
+		}
+		else if (event == "unity_video_click")
+		{
+			trace("UnityAds click");
+			dispatchEventIfPossible("CLICK");
+			if (clickCB != null) clickCB();
+		}
 	}
 #end
 
 #if android
 	private function new() {}
 	
+	public function onRewardedDisplaying()
+	{
+		trace("UnityAds Displaying");
+		dispatchEventIfPossible("DISPLAY");
+		if (viewCB != null) viewCB();
+	}
+
+	public function onRewardedClick()
+	{
+		trace("UnityAds click");
+		dispatchEventIfPossible("CLICK");
+		if (clickCB != null) clickCB();
+	}
+
 	public function onRewardedCompleted()
 	{
 		trace("UnityAds onRewardedCompleted");
 		dispatchEventIfPossible("CLOSED");
 		if (completeCB != null) completeCB();
 	}
+
 	public function onVideoSkipped()
 	{
 		trace("UnityAds onVideoSkipped");
