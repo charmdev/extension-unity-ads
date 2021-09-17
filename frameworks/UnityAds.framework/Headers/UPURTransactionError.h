@@ -1,7 +1,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, UPURTransactionError) {
+typedef NS_ENUM (NSInteger, UPURTransactionError) {
     kUPURTransactionErrorUnknownError,
     kUPURTransactionErrorNotSupported,
     kUPURTransactionErrorItemUnavailable,
@@ -10,6 +10,6 @@ typedef NS_ENUM(NSInteger, UPURTransactionError) {
     kUPURTransactionErrorServerError
 };
 
-NSString *NSStringFromUPURTransactionError(UPURTransactionError);
+NSString * NSStringFromUPURTransactionError(UPURTransactionError);
 
 NS_ASSUME_NONNULL_END

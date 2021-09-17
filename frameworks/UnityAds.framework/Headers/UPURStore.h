@@ -1,7 +1,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, UPURStore) {
+typedef NS_ENUM (NSInteger, UPURStore) {
     kUPURStoreNotSpecified,
     kUPURStoreGooglePlay,
     kUPURStoreAmazonAppStore,
@@ -15,6 +15,6 @@ typedef NS_ENUM(NSInteger, UPURStore) {
     kUPURStoreFacebookStore
 };
 
-NSString *NSStringFromUPURAppStore(UPURStore);
+NSString * NSStringFromUPURAppStore(UPURStore);
 
 NS_ASSUME_NONNULL_END

@@ -1,7 +1,7 @@
 /**
  *  An enumeration for the callback type returned via event.
  */
-typedef NS_ENUM(NSInteger, UnityAdsPurchasingEvent) {
+typedef NS_ENUM (NSInteger, UnityAdsPurchasingEvent) {
     /**
      *  An event that indicates the success or failure of a command sent to Purchasing.
      */
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param eventString The string provided via the ad.
  */
-- (void)unityAdsPurchasingDidInitiatePurchasingCommand:(NSString *)eventString;
+- (void)unityAdsPurchasingDidInitiatePurchasingCommand: (NSString *)eventString;
 /**
  *  Called when `UnityAds` needs to initialize Purchasing.
  *
@@ -69,14 +69,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param delegate delegate for UADSPurchasing callbacks
  */
-+ (void)initialize:(nullable id<UADSPurchasingDelegate>)delegate;
++ (void)initialize: (nullable id<UADSPurchasingDelegate>)delegate;
 /**
  *  Dispatches a callback to the UnityAds webview
  *
  *  @param event the type of event to be dispatched
  *  @param payload the string payload to be dispatched to the webview
  */
-+ (void)dispatchReturnEvent:(UnityAdsPurchasingEvent)event withPayload:(NSString *)payload;
++ (void)dispatchReturnEvent: (UnityAdsPurchasingEvent)event withPayload: (NSString *)payload;
 
 @end
 NS_ASSUME_NONNULL_END

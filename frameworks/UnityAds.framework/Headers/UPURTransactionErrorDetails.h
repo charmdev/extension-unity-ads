@@ -1,17 +1,17 @@
 
-#import "UPURTransactionError.h"
-#import "UPURStore.h"
+#import <UnityAds/UPURTransactionError.h>
+#import <UnityAds/UPURStore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UPURTransactionErrorDetailsBuilder: NSObject
+@interface UPURTransactionErrorDetailsBuilder : NSObject
 @property (nonatomic) UPURTransactionError transactionError;
 @property (strong, nonatomic) NSString *exceptionMessage;
 @property (nonatomic) UPURStore store;
 @property (strong, nonatomic) NSString *storeSpecificErrorCode;
 @property (strong, nonatomic) NSMutableDictionary *extras;
 
--(void)putExtra:(NSString *)key value:(NSObject *)value;
+- (void)putExtra: (NSString *)key value: (NSObject *)value;
 
 @end
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, readonly) NSString *storeSpecificErrorCode;
 @property (strong, nonatomic, readonly) NSDictionary *extras;
 
-+(instancetype)build:(void (^)(UPURTransactionErrorDetailsBuilder *))buildBlock;
++ (instancetype)build: (void (^)(UPURTransactionErrorDetailsBuilder *))buildBlock;
 
 @end
 
