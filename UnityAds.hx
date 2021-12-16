@@ -26,18 +26,19 @@ class UnityAds {
 
 	private static var isEnabled:Bool = true;
 
-	public static function init(appId:String, testMode:Bool, debugMode:Bool) {
+	public static function init(appId:String, placementId:String, testMode:Bool, debugMode:Bool) {
 #if ios
-		if(initialized) return;
+		if (initialized) return;
 		initialized = true;
-		try{
+
+		try {
 			__init = cpp.Lib.load("unityads","unityads_init",3);
 			__showRewarded = cpp.Lib.load("unityads","unityads_rewarded_show",3);
 			__canShowAds = cpp.Lib.load("unityads","unityads_canshow",1);
 
 			__init(appId, testMode, debugMode);
 			__unityads_set_event_handle(unity_notifyListeners);
-		}catch(e:Dynamic){
+		} catch(e:Dynamic) {
 			trace("iOS INIT Exception: "+e);
 			initialized = false;
 		}
@@ -51,13 +52,14 @@ class UnityAds {
 			__canShowAds = JNI.createStaticMethod("com/unityads/UnityAdsEx", "canShowUnityAds", "(Ljava/lang/String;)Z");
 			
 			if(__init == null) {
-				__init = JNI.createStaticMethod("com/unityads/UnityAdsEx", "init", "(Lorg/haxe/lime/HaxeObject;Ljava/lang/String;ZZ)V", true);
+				__init = JNI.createStaticMethod("com/unityads/UnityAdsEx", "init", "(Lorg/haxe/lime/HaxeObject;Ljava/lang/String;Ljava/lang/String;ZZ)V", true);
 			}
 
 			__inst = new UnityAds();
 			var args = new Array<Dynamic>();
 			args.push(__inst);
 			args.push(appId);
+			args.push(placementId);
 			args.push(testMode);
 			args.push(debugMode);
 			__init(args);
@@ -105,13 +107,21 @@ class UnityAds {
 		{
 			trace("UnityAds REWARDED COMPLETED");
 			dispatchEventIfPossible("CLOSED");
-			if (completeCB != null) completeCB();
+			if (completeCB != null)
+			{
+				completeCB();
+				skipCB = null;
+			}
 		}
 		else if (event == "unity_videoisskipped")
 		{
 			trace("UnityAds REWARDED SKIPPED");
 			dispatchEventIfPossible("CLOSED");
-			if (skipCB != null) skipCB();
+			if (skipCB != null)
+			{
+				skipCB();
+				completeCB = null;
+			}
 		}
 		else if (event == "unity_video_displaying")
 		{
@@ -149,14 +159,22 @@ class UnityAds {
 	{
 		trace("UnityAds onRewardedCompleted");
 		dispatchEventIfPossible("CLOSED");
-		if (completeCB != null) completeCB();
+		if (completeCB != null)
+		{
+			completeCB();
+			skipCB = null;
+		}
 	}
 
 	public function onVideoSkipped()
 	{
 		trace("UnityAds onVideoSkipped");
 		dispatchEventIfPossible("CLOSED");
-		if (skipCB != null) skipCB();
+		if (skipCB != null)
+		{
+			skipCB();
+			completeCB = null;
+		}
 	}
 #end
 
