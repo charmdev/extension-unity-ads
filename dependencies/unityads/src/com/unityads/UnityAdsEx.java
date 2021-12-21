@@ -57,6 +57,9 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 
 	@Override
 	public void onInitializationComplete() {
+
+		Log.d("UnityAdsEx","UnityAds.load");
+
 		UnityAds.load(adUnitId, loadListener);
 	}
 
@@ -85,6 +88,12 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 				}
 			});
 
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					_self.onInitializationComplete();
+				}
+			}, 5000);
 		}
 	};
 	
@@ -109,6 +118,13 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 		public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
 			Log.d("UnityAdsEx","onUnityAdsShowFailure");
 			canShow = false;
+
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					_self.onInitializationComplete();
+				}
+			}, 5000);
 			
 			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
 			view.queueEvent(new Runnable() {
