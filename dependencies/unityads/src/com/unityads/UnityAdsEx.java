@@ -81,19 +81,19 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 			canShow = false;
 			Log.d("UnityAdsEx","onUnityAdsFailedToLoad");
 
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					unityadsCallback.call("onVideoSkipped", new Object[] {});
-				}
-			});
-
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
 					_self.onInitializationComplete();
 				}
 			}, 5000);
+
+			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
+			view.queueEvent(new Runnable() {
+				public void run() {
+					unityadsCallback.call("onVideoSkipped", new Object[] {});
+				}
+			});
 		}
 	};
 	
