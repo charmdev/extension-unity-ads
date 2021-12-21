@@ -52,6 +52,17 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 	}
 
 	public static boolean canShowUnityAds(final String placementId) {
+
+		if (!canShow)
+		{
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					_self.onInitializationComplete();
+				}
+			}, 5000);
+		}
+
 		return canShow;
 	}
 
