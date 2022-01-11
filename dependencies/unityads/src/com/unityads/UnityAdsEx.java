@@ -24,7 +24,6 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 	private static String appId = null;
 	private static String adUnitId = null;
 	private static Boolean canShow = false;
-	protected static UnityAds.UnityAdsShowCompletionState resultFinishState;
 
 
 	static public void init(HaxeObject cb, final String appId, final String adUnitId, final boolean testMode, final boolean debugMode) {
@@ -87,8 +86,6 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 			canShow = false;
 			Log.d("UnityAdsEx","onUnityAdsFailedToLoad");
 
-			_self.onInitializationComplete();
-
 			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
 			view.queueEvent(new Runnable() {
 				public void run() {
@@ -119,8 +116,6 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 		public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
 			Log.d("UnityAdsEx","onUnityAdsShowFailure");
 			canShow = false;
-
-			_self.onInitializationComplete();
 			
 			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
 			view.queueEvent(new Runnable() {
@@ -164,8 +159,6 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 
 			if (Extension.mainView == null || unityadsCallback == null) return;
 
-			resultFinishState = state;
-
 			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
 			view.queueEvent(new Runnable() {
 				public void run() {
@@ -177,6 +170,8 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 					}
 				}
 			});
+
+			_self.onInitializationComplete();
 		}
 		
 	};
