@@ -105,75 +105,80 @@ public class UnityAdsEx extends Extension implements IUnityAdsInitializationList
 
 		Extension.mainActivity.runOnUiThread(new Runnable() {
 			public void run() {
-					UnityAds.show(mainActivity, rewardPlacementId, new UnityAdsShowOptions(), showListener);
+
+					
+						UnityAds.show(mainActivity, rewardPlacementId, new UnityAdsShowOptions(), 
+							
+							new IUnityAdsShowListener()
+							{
+								@Override
+								public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
+									Log.d("UnityAdsEx","onUnityAdsShowFailure");
+									canShow = false;
+									
+									GLSurfaceView view = (GLSurfaceView) Extension.mainView;
+									view.queueEvent(new Runnable() {
+										public void run() {
+											unityadsCallback.call("onVideoSkipped", new Object[] {});
+										}
+									});
+								};
+
+								@Override
+								public void onUnityAdsShowStart(String placementId) {
+									Log.d("UnityAdsEx","onUnityAdsShowStart");
+
+									if (Extension.mainView == null) return;
+									GLSurfaceView view = (GLSurfaceView) Extension.mainView;
+									view.queueEvent(new Runnable() {
+										public void run() {
+											if (unityadsCallback != null)
+												unityadsCallback.call("onRewardedDisplaying", new Object[] {});
+										}
+									});
+								};
+
+								@Override
+								public void onUnityAdsShowClick(String placementId) {
+									Log.d("UnityAdsEx","onUnityAdsShowClick");
+
+									if (Extension.mainView == null) return;
+									GLSurfaceView view = (GLSurfaceView) Extension.mainView;
+									view.queueEvent(new Runnable() {
+										public void run() {
+											if (unityadsCallback != null)
+												unityadsCallback.call("onRewardedClick", new Object[] {});
+										}
+									});
+								};
+
+								@Override
+								public void onUnityAdsShowComplete(String placementId, final UnityAds.UnityAdsShowCompletionState state) {
+									Log.v("UnityAdsExample", "onUnityAdsShowComplete: " + placementId);
+
+									if (Extension.mainView == null || unityadsCallback == null) return;
+
+									GLSurfaceView view = (GLSurfaceView) Extension.mainView;
+									view.queueEvent(new Runnable() {
+										public void run() {
+											if (state.equals(UnityAds.UnityAdsShowCompletionState.COMPLETED)) {
+												unityadsCallback.call("onRewardedCompleted", new Object[] {});
+											}
+											else {
+												unityadsCallback.call("onVideoSkipped", new Object[] {});
+											}
+										}
+									});
+
+									_self.onInitializationComplete();
+								}
+							}
+								
+						
+						);
+					
 				}
 		});
 	}
-
-	static private IUnityAdsShowListener showListener = new IUnityAdsShowListener()
-	{
-		@Override
-		public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
-			Log.d("UnityAdsEx","onUnityAdsShowFailure");
-			canShow = false;
-			
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					unityadsCallback.call("onVideoSkipped", new Object[] {});
-				}
-			});
-		};
-
-		@Override
-		public void onUnityAdsShowStart(String placementId) {
-			Log.d("UnityAdsEx","onUnityAdsShowStart");
-
-			if (Extension.mainView == null) return;
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					if (unityadsCallback != null)
-						unityadsCallback.call("onRewardedDisplaying", new Object[] {});
-				}
-			});
-		};
-
-		@Override
-		public void onUnityAdsShowClick(String placementId) {
-			Log.d("UnityAdsEx","onUnityAdsShowClick");
-
-			if (Extension.mainView == null) return;
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					if (unityadsCallback != null)
-						unityadsCallback.call("onRewardedClick", new Object[] {});
-				}
-			});
-		};
-
-		@Override
-		public void onUnityAdsShowComplete(String placementId, final UnityAds.UnityAdsShowCompletionState state) {
-			Log.v("UnityAdsExample", "onUnityAdsShowComplete: " + placementId);
-
-			if (Extension.mainView == null || unityadsCallback == null) return;
-
-			GLSurfaceView view = (GLSurfaceView) Extension.mainView;
-			view.queueEvent(new Runnable() {
-				public void run() {
-					if (state.equals(UnityAds.UnityAdsShowCompletionState.COMPLETED)) {
-						unityadsCallback.call("onRewardedCompleted", new Object[] {});
-					}
-					else {
-						unityadsCallback.call("onVideoSkipped", new Object[] {});
-					}
-				}
-			});
-
-			_self.onInitializationComplete();
-		}
-		
-	};
 
 }
